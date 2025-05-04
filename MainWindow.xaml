@@ -10,6 +10,123 @@
         Style="{StaticResource MaterialDesignWindow}"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 0 0 20">
+            <materialDesign:PackIcon Kind="ImageFilter" Width="32" Height="32" Margin="0 0 10 0"/>
+            <TextBlock Text="Image Filter Processor" FontSize="24" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Control Panel -->
+        <Border Grid.Row="1" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="0 0 0 1" Padding="0 0 0 10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- File List -->
+                <TextBox x:Name="SelectedFilesTextBox" Grid.Column="0" 
+                         materialDesign:HintAssist.Hint="Selected images" 
+                         IsReadOnly="True" Margin="0 0 10 0"/>
+
+                <!-- Load Button -->
+                <Button x:Name="LoadImagesButton" Grid.Column="1" 
+                        ToolTip="Select images to process"
+                        Margin="0 0 10 0"
+                        Style="{StaticResource MaterialDesignRaisedButton}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="FolderImage" Margin="0 0 5 0"/>
+                            <TextBlock Text="Load Images"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+                <!-- Filter Selection -->
+                <ComboBox x:Name="FilterComboBox" Grid.Column="2" 
+                          materialDesign:HintAssist.Hint="Select filter"
+                          Margin="0 0 10 0" Width="180">
+                    <ComboBoxItem>Grayscale</ComboBoxItem>
+                    <ComboBoxItem>Blur</ComboBoxItem>
+                    <ComboBoxItem>Edge Detection</ComboBoxItem>
+                    <ComboBoxItem>Sepia</ComboBoxItem>
+                    <ComboBoxItem>Invert Colors</ComboBoxItem>
+                </ComboBox>
+
+                <!-- Process Button -->
+                <Button x:Name="ProcessButton" Grid.Column="3" 
+                        ToolTip="Start image processing"
+                        Margin="0 0 10 0"
+                        >
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Play" Margin="0 0 5 0"/>
+                            <TextBlock Text="Start Processing"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+                <!-- Cancel Button -->
+                <Button x:Name="CancelButton" Grid.Column="4" 
+                        ToolTip="Cancel current operation"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        IsEnabled="False">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Close" Margin="0 0 5 0"/>
+                            <TextBlock Text="Cancel"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="2" Margin="0 10 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="7*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Log Panel -->
+            <GroupBox Grid.Column="0" Header="Activity Log" Margin="0 0 10 0">
+                <ListBox x:Name="LogListBox" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ItemContainerStyle="{StaticResource MaterialDesignListBoxItem}">
+                </ListBox>
+            </GroupBox>
+
+            <!-- Results Panel -->
+            <GroupBox Grid.Column="1" Header="Processed Images">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <WrapPanel x:Name="ResultsWrapPanel" Orientation="Horizontal">
+                        <TextBlock Text="Processed images will appear here" 
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                   Margin="10"/>
+                    </WrapPanel>
+                </ScrollViewer>
+            </GroupBox>
+        </Grid>
+
+        <!-- Progress Bar -->
+        <Grid Grid.Row="3" Margin="0 10 0 0">
+            <ProgressBar x:Name="ProcessingProgressBar" 
+                         Height="20" 
+                         Minimum="0" Maximum="100" Value="50"/>
+            <TextBlock Text="{Binding ElementName=ProcessingProgressBar, Path=Value, StringFormat={}{0:0}%}" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+        </Grid>
     </Grid>
 </Window>
