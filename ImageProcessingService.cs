@@ -103,7 +103,7 @@ public class ImageProcessingService
         _cts.Cancel();
         LogMessage?.Invoke("⛔️ Cancel requested.");
     }
-
+    
     private async Task ProcessSingleImageAsync(string path, CancellationToken cancellationToken)
     {
         string fileName = Path.GetFileName(path);
@@ -114,8 +114,12 @@ public class ImageProcessingService
 
             var original = await Task.Run(() => ImageProcessor.LoadBitmap(path), cancellationToken);
             var filtered = await Task.Run(() => ImageProcessor.ApplyFilter(original, _selectedFilter, cancellationToken), cancellationToken);
+            
+            string filterPrefix = _selectedFilter.ToLower();
+            string outputPath = Path.Combine(
+                Path.GetDirectoryName(path)!, 
+                $"{filterPrefix}_{fileName}");
 
-            string outputPath = Path.Combine(Path.GetDirectoryName(path)!, $"filtered_{fileName}");
             await Task.Run(() => ImageProcessor.SaveBitmapToFile(filtered, outputPath), cancellationToken);
 
             ImageProcessed?.Invoke(new ProcessedImage
@@ -125,7 +129,7 @@ public class ImageProcessingService
                 Status = "Done"
             });
 
-            LogMessage?.Invoke($"✔️ {fileName} processed.");
+            LogMessage?.Invoke($"✔️ {fileName} processed with {_selectedFilter} filter.");
         }
         catch (OperationCanceledException)
         {
