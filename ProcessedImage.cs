@@ -6,5 +6,5 @@ public class ProcessedImage
 {
     public string FileName { get; set; } = "";
     public BitmapImage Thumbnail { get; set; } = new();
-    public string Status { get; set; } = "Ожидание";
+    public string Status { get; set; } = "Pending";
 }
