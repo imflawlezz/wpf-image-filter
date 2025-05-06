@@ -1,18 +1,10 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.IO;
-
 
 namespace wpf_image_filter
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
@@ -39,17 +31,13 @@ namespace wpf_image_filter
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
         }
-
-
-
+        
         private void Window_DragEnter(object sender, DragEventArgs e)
         {
-            // Проверяем, что перетаскиваются файлы
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 var files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 
-                // Проверяем, что все файлы имеют допустимые расширения
                 var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".bmp" };
                 if (files.All(f => validExtensions.Contains(Path.GetExtension(f).ToLower())))
                 {
