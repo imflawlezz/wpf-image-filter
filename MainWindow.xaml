@@ -8,12 +8,15 @@
         mc:Ignorable="d"
         Title="WPF Image Filter" Height="800" Width="1200"
         Style="{StaticResource MaterialDesignWindow}"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        AllowDrop="True"
+        DragEnter="Window_DragEnter"
+        Drop="Window_Drop">
 
     <Window.DataContext>
         <local:MainViewModel/>
     </Window.DataContext>
-
+    
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -42,8 +45,12 @@
                 <!-- File List -->
                 <TextBox Grid.Column="0" 
                          Text="{Binding SelectedFilesText, Mode=OneWay}"
-                         materialDesign:HintAssist.Hint="Selected images" 
-                         IsReadOnly="True" Margin="0 0 10 0"/>
+                         materialDesign:HintAssist.Hint="Drag and drop images here or click 'Load Images'" 
+                         IsReadOnly="True" 
+                         Margin="0 0 10 0"
+                         AllowDrop="True"
+                         PreviewDragOver="TextBox_PreviewDragOver"
+                         Drop="TextBox_Drop"/>
 
                 <!-- Load Button -->
                 <Button Grid.Column="1" 

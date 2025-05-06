@@ -103,4 +103,12 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void OnPropertyChanged(string propertyName) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    
+    public void LoadImagesFromPaths(string[] paths)
+    {
+        _processingService.SetImagePaths(paths);
+        SelectedFilesText = string.Join("; ", paths.Select(Path.GetFileName));
+        LogMessages.Clear();
+        LogMessages.Add($"{paths.Length} images loaded via drag&drop.");
+    }
 }
