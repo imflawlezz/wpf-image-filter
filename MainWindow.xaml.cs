@@ -96,5 +96,81 @@ namespace wpf_image_filter
                 }
             }
         }
+        
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            var hwndSource = PresentationSource.FromVisual(this) as System.Windows.Interop.HwndSource;
+            hwndSource?.AddHook(WindowProc);
+        }
+
+        private const int HTLEFT = 10;
+        private const int HTRIGHT = 11;
+        private const int HTTOP = 12;
+        private const int HTTOPLEFT = 13;
+        private const int HTTOPRIGHT = 14;
+        private const int HTBOTTOM = 15;
+        private const int HTBOTTOMLEFT = 16;
+        private const int HTBOTTOMRIGHT = 17;
+        private const int WM_NCHITTEST = 0x0084;
+
+        private IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == WM_NCHITTEST)
+            {
+                Point position = PointFromScreen(new Point((lParam.ToInt32() & 0xFFFF), (lParam.ToInt32() >> 16)));
+                double gripSize = 8;
+
+                if (position.Y < gripSize)
+                {
+                    if (position.X < gripSize)
+                    {
+                        handled = true;
+                        return (IntPtr)HTTOPLEFT;
+                    }
+                    else if (position.X > ActualWidth - gripSize)
+                    {
+                        handled = true;
+                        return (IntPtr)HTTOPRIGHT;
+                    }
+                    else
+                    {
+                        handled = true;
+                        return (IntPtr)HTTOP;
+                    }
+                }
+                else if (position.Y > ActualHeight - gripSize)
+                {
+                    if (position.X < gripSize)
+                    {
+                        handled = true;
+                        return (IntPtr)HTBOTTOMLEFT;
+                    }
+                    else if (position.X > ActualWidth - gripSize)
+                    {
+                        handled = true;
+                        return (IntPtr)HTBOTTOMRIGHT;
+                    }
+                    else
+                    {
+                        handled = true;
+                        return (IntPtr)HTBOTTOM;
+                    }
+                }
+                else if (position.X < gripSize)
+                {
+                    handled = true;
+                    return (IntPtr)HTLEFT;
+                }
+                else if (position.X > ActualWidth - gripSize)
+                {
+                    handled = true;
+                    return (IntPtr)HTRIGHT;
+                }
+            }
+
+            return IntPtr.Zero;
+        }
+
     }
 }
