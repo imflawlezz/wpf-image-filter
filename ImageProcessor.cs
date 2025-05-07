@@ -44,9 +44,9 @@ public class ImageProcessor
                     pixels[i + 2] = (byte)Math.Min(255, r * 0.9);
                     break;
                 case "Blur":
-                    pixels[i] = (byte)(b * 0.95);
-                    pixels[i + 1] = (byte)(g * 0.95);
-                    pixels[i + 2] = (byte)(r * 0.95);
+                    pixels[i] = (byte)(b * 0.75);
+                    pixels[i + 1] = (byte)(g * 0.75);
+                    pixels[i + 2] = (byte)(r * 0.75);
                     break;
             }
         }
